@@ -77,6 +77,7 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.StringUtils;
 
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DefaultSaslConfig;
 
 /**
  * A Log4j 2 appender that publishes logging events to an AMQP Exchange.
@@ -715,6 +716,9 @@ public class AmqpAppender extends AbstractAppender {
 					factoryBean.setSslPropertiesLocation(sslPropertiesResource);
 				}
 				else {
+					if (this.keyStore != null) {
+						factoryBean.setSaslConfig(DefaultSaslConfig.EXTERNAL);
+					}
 					factoryBean.setKeyStore(this.keyStore);
 					factoryBean.setKeyStorePassphrase(this.keyStorePassphrase);
 					factoryBean.setKeyStoreType(this.keyStoreType);

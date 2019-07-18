@@ -62,6 +62,7 @@ import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.encoder.Encoder;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DefaultSaslConfig;
 
 /**
  * A Logback appender that publishes logging events to an AMQP Exchange.
@@ -721,6 +722,9 @@ public class AmqpAppender extends AppenderBase<ILoggingEvent> {
 				factoryBean.setSslPropertiesLocation(sslPropertiesResource);
 			}
 			else {
+				if (this.keyStore != null) {
+					factoryBean.setSaslConfig(DefaultSaslConfig.EXTERNAL);
+				}
 				factoryBean.setKeyStore(this.keyStore);
 				factoryBean.setKeyStorePassphrase(this.keyStorePassphrase);
 				factoryBean.setKeyStoreType(this.keyStoreType);
